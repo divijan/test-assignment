@@ -16,10 +16,9 @@ case class Node(children: List[Node], leaves: List[Leaf]) {
     */
   def balance(w: Int): Node = {
     def balanceNode(carryOver: LeafList, node: Node): (Node, LeafList) = {
-      val (underLimit, thisCarryOver) = node.leaves.splitByTotal(w)
-      val totalCarryOver = carryOver ++ thisCarryOver
+      val (underLimit, overLimit) = (new LeafList(node.leaves).mergeSort merge carryOver).splitByTotal(w)
 
-      val (balancedChildren, childrenCarryOver) = balanceList(carryOver ++ thisCarryOver, node.children)
+      val (balancedChildren, childrenCarryOver) = balanceList(overLimit, node.children)
       Node(balancedChildren, underLimit.list) -> childrenCarryOver
     }
 
