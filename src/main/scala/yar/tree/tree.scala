@@ -36,4 +36,8 @@ case class Node(children: List[Node], leaves: List[Leaf]) {
 
 }
 
+object Node {
+  def apply(): Node = Node(Nil, Nil)
+}
+
 case class Leaf(weight: Int)
