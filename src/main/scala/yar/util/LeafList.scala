@@ -4,8 +4,6 @@ import yar.tree.Leaf
 import yar.util._
 
 class LeafList(val list: List[Leaf]) {
-  lazy val totalWeight = list.map(_.weight).sum
-
   def isEmpty = list.isEmpty
 
   def ++(other: LeafList) = new LeafList(list ++ other.list)
