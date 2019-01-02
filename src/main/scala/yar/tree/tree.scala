@@ -15,14 +15,14 @@ case class Node(children: List[Node], leaves: List[Leaf]) {
     * @return balanced tree stemming from this Node
     */
   def balance(w: Int): Node = {
-    def balanceNode(carryOver: LeafList, node: Node): (Node, LeafList) = {
-      val (underLimit, overLimit) = (new LeafList(node.leaves).mergeSort merge carryOver).splitByTotal(w)
+    def balanceNode(carryOver: List[Leaf], node: Node): (Node, List[Leaf]) = {
+      val (underLimit, overLimit) = (node.leaves.mergeSort merge carryOver).splitByTotal(w)
 
       val (balancedChildren, childrenCarryOver) = balanceList(overLimit, node.children)
       Node(balancedChildren, underLimit.list) -> childrenCarryOver
     }
 
-    def balanceList(carryOver: LeafList, nodes: List[Node]): (List[Node], LeafList) = nodes match {
+    def balanceList(carryOver: List[Leaf], nodes: List[Node]): (List[Node], List[Leaf]) = nodes match {
       case h :: t => {
         val (bHead, headCarryOver) = balanceNode(carryOver, h)
         val (bTail, tailCarryOver) = balanceList(headCarryOver, t)
@@ -40,4 +40,7 @@ object Node {
   def apply(): Node = Node(Nil, Nil)
 }
 
-case class Leaf(weight: Int)
+case class Leaf(weight: Int) {
+  //took a liberty to require a positive weight here, instead of integer non-zero, as per requirements
+  require(weight > 0, "Leaf weight must be > 0")
+}
