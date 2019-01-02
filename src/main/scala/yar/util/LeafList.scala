@@ -1,7 +1,6 @@
 package yar.util
 
 import yar.tree.Leaf
-import yar.util._
 
 protected class LeafList(val list: List[Leaf]) {
   //assume this and that are sorted. Public for efficiency reasons (see yar.tree.Node:19)

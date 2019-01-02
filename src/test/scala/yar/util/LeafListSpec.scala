@@ -38,10 +38,20 @@ class LeafListSpec extends mutable.Specification with AllExpectations {
     }
   }
 
-  "Split list by total weight" >> {
+  "Split list where total weight exceeds the limit" >> {
     "split List(1,2,3,4) at total of 4" >> {
       val list = List(Leaf(1), Leaf(2), Leaf(3), Leaf(4))
       list.splitByTotal(4) === (List(Leaf(1), Leaf(2)), List(Leaf(3), Leaf(4)))
+    }
+
+    "split List(1,2,3,4) at total of 0" >> {
+      val list = List(Leaf(1), Leaf(2), Leaf(3), Leaf(4))
+      list.splitByTotal(0) === (emptyList, list)
+    }
+
+    "split List(1,2,3,4) at total of 100" >> {
+      val list = List(Leaf(1), Leaf(2), Leaf(3), Leaf(4))
+      list.splitByTotal(100) === (list, emptyList)
     }
   }
 
