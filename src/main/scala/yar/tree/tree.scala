@@ -5,14 +5,11 @@ import yar.util._
 import scala.collection.mutable
 
 case class Node(children: List[Node], leaves: List[Leaf]) {
-  lazy val totalWeight = leaves.map(_.weight).sum
-
-  /**
-    * This method sorts leaves in all the tree and carries leaves
-    * that exceed the total weight limit for the node over to the next nodes
-    * in a depth-first order. After the tree is traversed, exceeding leaves are discarded
+  /** Returns a balanced tree where each node's leaves are sorted by weight and do not exceed
+    * weight limit. Leaves that exceed the total weight limit for the node are transferred over
+    * to the next node in a depth-first order. After the tree is traversed, exceeding leaves are discarded.
     * @param w upper limit for the total weight of leaves
-    * @return balanced tree stemming from this Node
+    * @return balanced tree with this Node as root
     */
   def balance(w: Int): Node = {
     def balanceNode(carryOver: List[Leaf], node: Node): (Node, List[Leaf]) = {
@@ -31,7 +28,7 @@ case class Node(children: List[Node], leaves: List[Leaf]) {
       case Nil => Nil -> carryOver
     }
 
-    balanceNode(List.empty[Leaf], this)._1
+    balanceNode(Nil, this)._1
   }
 
 }

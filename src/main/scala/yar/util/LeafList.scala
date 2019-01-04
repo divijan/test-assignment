@@ -7,23 +7,38 @@ protected class LeafList(val list: List[Leaf]) {
   def merge(that: List[Leaf]): List[Leaf] = (this.list, that) match {
     case (Nil, _) => that
     case (_, Nil) => this.list
-    case (hl :: tl, hr :: tr) => if (hl.weight <= hr.weight) {
-      hl :: (tl merge that)
-    } else {
-      hr :: (this.list merge tr)
-    }
+    case (hl :: tl, hr :: tr) =>
+      val (l1, l2) = list.span(_.weight <= hr.weight)
+      (l1, l2) match {
+        case (Nil, _) => that merge this.list
+        case (_, Nil) => this.list ++ that
+        case (_, _) => l1 ++ (l2 merge that)
+      }
   }
 
 
-  def mergeSort: List[Leaf] = {
-    val halfIndex = list.length / 2
-    if (halfIndex == 0) {
+  def mergeSort: List[Leaf] = if (list.isEmpty || list.tail.isEmpty) {
       list
     } else {
-      val (left, right) = list.splitAt(halfIndex)
-      left.mergeSort merge right.mergeSort
+      val headWeight = list.head.weight
+      if (headWeight <= list.tail.head.weight) {
+        var currentMax = headWeight
+        val (l1, l2) = list.tail.span(l => {
+          val cm = currentMax
+          currentMax = l.weight
+          l.weight >= cm
+        })
+        (list.head :: l1) merge l2.mergeSort
+      } else {
+        var currentMin = headWeight
+        val (l1, l2) = list.tail.span(l => {
+          val cm = currentMin
+          currentMin = l.weight
+          l.weight <= cm // < would make sorting stable
+        })
+        (list.head :: l1).reverse merge l2.mergeSort
+      }
     }
-  }
 
 
   def splitByTotal(totalWeightLimit: Int): (List[Leaf], List[Leaf]) = {

@@ -6,8 +6,6 @@ import yar.tree.Leaf
 
 class LeafListSpec extends mutable.Specification with AllExpectations {
 
-  val emptyList = List.empty[Leaf]
-
   "Merge sorted lists" >> {
     "Merge List(1,2,3) with List(2,3,4)" >> {
       val l1 = List(Leaf(1),Leaf(2),Leaf(3))
@@ -16,11 +14,11 @@ class LeafListSpec extends mutable.Specification with AllExpectations {
     }
 
     "Merge empty lists" >> {
-      (emptyList merge emptyList) === emptyList
+      (Nil merge Nil) === Nil
     }
 
     "Merge empty list with a non-empty one" >> {
-      (emptyList merge List(Leaf(5), Leaf(7))) === List(Leaf(5), Leaf(7))
+      (Nil merge List(Leaf(5), Leaf(7))) === List(Leaf(5), Leaf(7))
     }
 
     "Merge lists with a single element" >> {
@@ -34,7 +32,7 @@ class LeafListSpec extends mutable.Specification with AllExpectations {
     }
 
     "Sort an emtpy list" >> {
-      emptyList.mergeSort === emptyList
+      Nil.mergeSort === Nil
     }
   }
 
@@ -46,12 +44,12 @@ class LeafListSpec extends mutable.Specification with AllExpectations {
 
     "split List(1,2,3,4) at total of 0" >> {
       val list = List(Leaf(1), Leaf(2), Leaf(3), Leaf(4))
-      list.splitByTotal(0) === (emptyList, list)
+      list.splitByTotal(0) === (Nil, list)
     }
 
     "split List(1,2,3,4) at total of 100" >> {
       val list = List(Leaf(1), Leaf(2), Leaf(3), Leaf(4))
-      list.splitByTotal(100) === (list, emptyList)
+      list.splitByTotal(100) === (list, Nil)
     }
   }
 
