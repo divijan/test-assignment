@@ -2,8 +2,6 @@ package yar.tree
 
 import yar.util._
 
-import scala.collection.mutable
-
 case class Node(children: List[Node], leaves: List[Leaf]) {
   /** Returns a balanced tree where each node's leaves are sorted by weight and do not exceed
     * weight limit. Leaves that exceed the total weight limit for the node are transferred over
@@ -12,14 +10,14 @@ case class Node(children: List[Node], leaves: List[Leaf]) {
     * @return balanced tree with this Node as root
     */
   def balance(w: Int): Node = {
-    def balanceNode(carryOver: List[Leaf], node: Node): (Node, List[Leaf]) = {
-      val (underLimit, overLimit) = (node.leaves.mergeSort merge carryOver).splitByTotal(w)
+    def balanceNode(carryOver: SortedList[Leaf], node: Node): (Node, SortedList[Leaf]) = {
+      val (underLimit, overLimit) = (node.leaves.sort merge carryOver).splitByTotal(w)
 
       val (balancedChildren, childrenCarryOver) = balanceList(overLimit, node.children)
       Node(balancedChildren, underLimit.list) -> childrenCarryOver
     }
 
-    def balanceList(carryOver: List[Leaf], nodes: List[Node]): (List[Node], List[Leaf]) = nodes match {
+    def balanceList(carryOver: SortedList[Leaf], nodes: List[Node]): (List[Node], SortedList[Leaf]) = nodes match {
       case h :: t => {
         val (bHead, headCarryOver) = balanceNode(carryOver, h)
         val (bTail, tailCarryOver) = balanceList(headCarryOver, t)
@@ -28,7 +26,7 @@ case class Node(children: List[Node], leaves: List[Leaf]) {
       case Nil => Nil -> carryOver
     }
 
-    balanceNode(Nil, this)._1
+    balanceNode(SortedList[Leaf](Nil), this)._1
   }
 
 }
