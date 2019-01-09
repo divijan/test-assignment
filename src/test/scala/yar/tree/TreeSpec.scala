@@ -29,8 +29,10 @@ class TreeSpec extends mutable.Specification with AllExpectations {
   }
 
   "Balance another tree" >> {
-    val tree = Node(List(Node(Nil, List(Leaf(2), Leaf(4), Leaf(3), Leaf(1))),
-                         Node(Node() :: Nil, Nil),
+    val tree = Node(List(Node(Nil,
+                              List(Leaf(2), Leaf(4), Leaf(3), Leaf(1))),
+                         Node(Node() :: Nil,
+                              Nil),
                          Node()),
                     Nil)
     tree.balance(4) === Node(List(Node(Nil,
