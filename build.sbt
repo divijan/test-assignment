@@ -1,6 +1,6 @@
 name := "interkassa-test-assignment"
 
-version := "0.1"
+version := "1.5"
 
 scalaVersion := "2.12.8"
 
